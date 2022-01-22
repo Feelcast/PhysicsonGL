@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [
+        ""
+      ],
+      "stopAtEntry": false,
+      "cwd": "c:/Users/Rodrigo Pacheco/OneDrive - Universidad Autonoma de Yucatan/Code/C++/OpenGL/rk4",
+      "environment": [],
+      "program": "c:/Users/Rodrigo Pacheco/OneDrive - Universidad Autonoma de Yucatan/Code/C++/OpenGL/rk4/build/Debug/outDebug",
+      "internalConsoleOptions": "openOnSessionStart",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
+      "externalConsole": false,
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
