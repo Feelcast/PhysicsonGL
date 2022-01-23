@@ -1,8 +1,11 @@
-//g++ Physics.cpp -o Physics -lglut -lGLU -lGL -O2 && ./Physics
+//g++ -o Physics.exe Physics.cpp -L"C:\MinGW\freeglut\include" -lfreeglut -lopengl32 && .\Physics.exe
+//.\Physics.exe
 #include "GL/glut.h"
+#include "GL/freeglut.h"
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <string.h>
 #include <initializer_list>
 #define PI 3.141592654
 #define n 100
@@ -16,26 +19,20 @@ class vec{
 	double& operator[](int i){
 	return comps[i];
 	}
-
+	std::string toString(){
+		return std::to_string(comps[0])+","+std::to_string(comps[1])+","+std::to_string(comps[2]);
+	}
 	private:
 };
 
 
-vec operator*(vec v, double d){
-	
-}
+vec operator*(vec v, double d) {return {v.comps[0]*d,v.comps[1]*d,v.comps[2]*d};}
 
-vec operator*(double d, vec v){
-	
-}
+vec operator*(double d, vec v) {return {v.comps[0]*d,v.comps[1]*d,v.comps[2]*d};}
 
-vec operator+(vec l, vec r){
+vec operator+(vec l, vec r) {return {l.comps[0]+r.comps[0],l.comps[1]+r.comps[1],l.comps[2]+r.comps[2]};}
 
-}
-
-vec operator-(vec l, vec r){
-
-}
+vec operator-(vec l, vec r) {return {l.comps[0]-r.comps[0],l.comps[1]-r.comps[1],l.comps[2]-r.comps[2]};}
 
 vec operator-(vec v){
 
@@ -413,6 +410,9 @@ int main(int argc, char* argv[]) {
 	//init_gas(15);
 	addball(0,-150,0,0,5,100);
 	addball(150,-150,0,1,5,100);
+	vec a = {1,2,3};
+	a = 3.0*a;
+	std::cout << a.toString();
 
 	
 	// Initialize GLUT
@@ -430,5 +430,6 @@ int main(int argc, char* argv[]) {
 	// call all the functions in the API.
 	glutTimerFunc(1,time,0);
 	glutMainLoop();
+	
 	return 0;
 }
