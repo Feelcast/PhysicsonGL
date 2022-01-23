@@ -22,6 +22,20 @@ class vec{
 	std::string toString(){
 		return std::to_string(comps[0])+","+std::to_string(comps[1])+","+std::to_string(comps[2]);
 	}
+
+	vec& operator+=(const vec& r){
+		comps[0] += r.comps[0];
+		comps[1] += r.comps[1];
+		comps[2] += r.comps[2];
+		return *this;
+	}
+
+	vec& operator-=(const vec& r){
+		comps[0] -= r.comps[0];
+		comps[1] -= r.comps[1];
+		comps[2] -= r.comps[2];
+		return *this;
+	}
 	private:
 };
 
@@ -34,25 +48,12 @@ vec operator+(vec l, vec r) {return {l.comps[0]+r.comps[0],l.comps[1]+r.comps[1]
 
 vec operator-(vec l, vec r) {return {l.comps[0]-r.comps[0],l.comps[1]-r.comps[1],l.comps[2]-r.comps[2]};}
 
-vec operator-(vec v){
+vec operator-(vec v) {return {-v.comps[0],-v.comps[1],-v.comps[2]};}
 
-}
-
-vec operator/(vec v, double d){
-	
-}
-
-vec operator+=(vec l, vec r){
-
-}
-
-vec operator-=(vec l, vec r){
-
-}
+vec operator/(vec v, double d) {return {v.comps[0]/d,v.comps[1]/d,v.comps[2]/d};}
 
 double dot(vec v1, vec v2){
 	double dot = 0;
-
 	return dot;
 }
 
@@ -326,18 +327,24 @@ void rendercm(){
 
 void render()
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH, GL_NICEST);
+	glEnable(GL_POINT_SMOOTH);
+	glHint(GL_POINT_SMOOTH, GL_NICEST);
 	glClearColor(1.0f,1.0f,1.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0.0,0.0,0.0); 
-	glOrtho(-300.0,300.0, -300.0,300.0, 0, 1);
+	glOrtho(-400.0,400.0, -320.0,320.0, 0, 1);
 	//desplaza todo
 	//glPushMatrix(), glPopMatrix() Transforma el espacio relativamente a la figura
 	//grid(15,40);
     //grid(10,60);
     //linew(0.,-300.,0.,300.);
-    linew(-300.,-250.,300.,-250.);
+    //linew(-300.,-250.,300.,-250.);
 
 	for(int i=0;i<circles.size();i++){
 		Circle &c = circles[i];
@@ -353,7 +360,7 @@ void render()
 		lineb(l.xi[0], l.xi[1],l.xf[0], l.xf[1]);
 	}
 	rendervels();
-	rendercm();
+	//rendercm();
 	glutSwapBuffers();
 	
 }
@@ -394,7 +401,7 @@ void SimForceB(){
 }
 
 void time (int v){
-	vec g = {0.,0.};
+	vec g = {0.,-100.};
 	SimCircles(g);
 	SimForceB();
 	render();
@@ -403,24 +410,26 @@ void time (int v){
 }
 
 int main(int argc, char* argv[]) {
-	linegen(-250,-250,250,-250);
-	linegen(250,-250,250,250);
-	linegen(250,250,-250,250);
-	linegen(-250,250,-250,-250);
+	linegen(-380,-300,380,-300);
+	linegen(-380,300,380,300);
+	linegen(-380,-300,-380,300);
+	linegen(380,300,380,-300);
 	//init_gas(15);
 	addball(0,-150,0,0,5,100);
-	addball(150,-150,0,1,5,100);
+	//addball(150,-150,0,1,5,100);
 	vec a = {1,2,3};
 	a = 3.0*a;
+	a+=a;
 	std::cout << a.toString();
 
 	
 	// Initialize GLUT
 	glutInit(&argc, argv);
+
 	// Set up some memory buffers for our display
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	// Set the window size
-	glutInitWindowSize(600, 600);
+	glutInitWindowSize(800, 640);
 	// Create the window with the title "Hello,GL"
 	glutCreateWindow("GLarmad");
 	// Bind the two functions (above) to respond when necessary
