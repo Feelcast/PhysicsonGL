@@ -53,14 +53,13 @@ vec operator-(vec v) {return {-v.comps[0],-v.comps[1],-v.comps[2]};}
 vec operator/(vec v, double d) {return {v.comps[0]/d,v.comps[1]/d,v.comps[2]/d};}
 
 double dot(vec v1, vec v2){
-	double dot = 0;
+	double dot = v1.comps[0]*v2.comps[0]+v1.comps[1]*v2.comps[1]+v1.comps[2]*v2.comps[2];
 	return dot;
 }
 
 vec normalise(vec v){
-	vec nor;
-
-	return nor;
+	double mag = sqrt(dot(v,v));
+	return v/mag;
 }
 
 double randvel()
@@ -82,10 +81,10 @@ vec Force(vec x2, vec x1,double m1, double m2, double k){
 vec vnext(vec v,vec x2, vec x1,double m1, double m2, double k,double h){
 	vec r = x2-x1;
 	vec rh= normalise(r);
-	vec k1 = Force(x2,x1,m1,m2,k);
-	vec k2 = Force(x2,x1+h*k1/2,m1,m2,k);
-	vec k3 = Force(x2,x1+h*k2/2,m1,m2,k);
-	vec k4 = Force(x2,x1+h*k3,m1,m2,k);
+	vec k1 = Force(x2,x1,m1,m2,k)/m2;
+	vec k2 = Force(x2,x1+h*k1/2,m1,m2,k)/m2;
+	vec k3 = Force(x2,x1+h*k2/2,m1,m2,k)/m2;
+	vec k4 = Force(x2,x1+h*k3,m1,m2,k)/m2;
 	return v+ h*(k1+2.0*k2+2.0*k3+k4)/6.0;
 }
 vec xnext(vec v,vec x,double h){
@@ -120,7 +119,7 @@ v+=sc*nor;
 c.v-= sc*nor;
 }
 void simulate(vec acc){
-	v += acc*(1./100.);
+	v += acc*(1.0/100.0);
 	x += v;
 }
 
@@ -151,12 +150,12 @@ v+=sc*nor;
 c.v-= sc*nor;
 }
 void resolveInter(GBall &c){
-	v = vnext(v,c.x,x,c.m,m,40,0.001);
-	c.v = vnext(c.v,x,c.x,m,c.m,40,0.001);
+	v = vnext(v,c.x,x,c.m,m,10,0.001);
+	c.v = vnext(c.v,x,c.x,m,c.m,10,0.001);
 }
 void simulate(){
-	//x = xnext(v,x,0.001);
-	x+=v;
+	x = xnext(v,x,0.001);
+	//x+=v;
 }
 
 };
@@ -359,10 +358,9 @@ void render()
 		Line &l = lines[i];
 		lineb(l.xi[0], l.xi[1],l.xf[0], l.xf[1]);
 	}
-	rendervels();
+	//rendervels();
 	//rendercm();
 	glutSwapBuffers();
-	
 }
 
 void SimCircles(vec g){
@@ -400,9 +398,13 @@ void SimForceB(){
 	}
 }
 
+void ballFromString(std::string str){
+
+}
+
 void time (int v){
-	vec g = {0.,-100.};
-	SimCircles(g);
+	//vec g = {0.,-0.01};
+	//SimCircles(g);
 	SimForceB();
 	render();
 	glutPostRedisplay();
@@ -415,12 +417,8 @@ int main(int argc, char* argv[]) {
 	linegen(-380,-300,-380,300);
 	linegen(380,300,380,-300);
 	//init_gas(15);
-	addball(0,-150,0,0,5,100);
-	//addball(150,-150,0,1,5,100);
-	vec a = {1,2,3};
-	a = 3.0*a;
-	a+=a;
-	std::cout << a.toString();
+	addball(0,-150,0,1,5,1000);
+	addball(50,-150,0,15,5,1);
 
 	
 	// Initialize GLUT
