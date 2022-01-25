@@ -111,13 +111,13 @@ vec d = c.x-x;
 vec nor = normalise(d);
 x-=nor*(c.r+r-dist(c.x,x))/2;
 c.x+= nor*(c.r+r-dist(c.x,x))/2;
-//nor = normalise(d);
 vec relv=c.v-v;
 double sc = relv[0]*nor[0]+relv[1]*nor[1];
 if(sc>0) return;
 v+=sc*nor;
 c.v-= sc*nor;
 }
+
 void simulate(vec acc){
 	v += acc*(1.0/100.0);
 	x += v;
@@ -142,7 +142,6 @@ vec d = c.x-x;
 vec nor = normalise(d);
 x-=nor*(c.r+r-dist(c.x,x))/2;
 c.x+= nor*(c.r+r-dist(c.x,x))/2;
-//nor = normalise(d);
 vec relv=c.v-v;
 double sc = relv[0]*nor[0]+relv[1]*nor[1];
 if(sc>0) return;
@@ -247,6 +246,7 @@ void circle(double x, double y, double r){
 	}
 	glEnd();
 }
+
 void circler(double x, double y, double r){
     glBegin(GL_LINE_STRIP);
 	for (int j=0;j<n;j++){
@@ -264,6 +264,7 @@ void line(float xc1,float yc1,float xc2,float yc2)
 	glVertex2f(xc2,yc2);
 	glEnd();
 }
+
 void linew(float xc1,float yc1,float xc2,float yc2)
 {
 	glBegin(GL_LINES);
@@ -420,16 +421,14 @@ int main(int argc, char* argv[]) {
 	addball(0,-150,0,1,5,1000);
 	addball(50,-150,0,15,5,1);
 
-	
 	// Initialize GLUT
 	glutInit(&argc, argv);
-
 	// Set up some memory buffers for our display
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	// Set the window size
 	glutInitWindowSize(800, 640);
 	// Create the window with the title "Hello,GL"
-	glutCreateWindow("GLarmad");
+	glutCreateWindow("PhysicsEngine");
 	// Bind the two functions (above) to respond when necessary
 	glutReshapeFunc(changeViewPort);
 	glutDisplayFunc(render);
